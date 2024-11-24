@@ -45,7 +45,7 @@ static BITBOARD create_move_mask(struct _move* move) {
 
     // copy the mask and then shift it by
     // the normalized direction and use
-    // bitwise AND to stitch them together
+    // bitwise OR to stitch them together
     BITBOARD mask = make_mask(x + dx, y + dy);
     BITBOARD copy = mask;
     while (--c > 1) {
