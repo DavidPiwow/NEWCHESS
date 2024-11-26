@@ -126,16 +126,20 @@ int attempt_move(BoardState* game_state, struct _move* move, int white_team) {
     if (!(team_board & piece_location)) return 0;
 
     BITBOARD enemy_board = white_team ? game_state->black : game_state->white;
-    BITBOARD total_board = team_board | enemy_board;
 
     team_board = team_board ^ piece_location;
 
     shift_mask(&piece_location, move->dx, move->dy);
 
+    if (enemy_board & piece_location) enemy_board = enemy_board ^ piece_location;
+
+
+    BITBOARD total_board = team_board | enemy_board;
+
     // create a mask of the pieces BETWEEN the ends of the move
     BITBOARD move_mask = create_move_mask(move);
 
-    if (team_board & move_mask) {
+    if (total_board & move_mask) {
         return 0;
     }
 

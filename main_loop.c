@@ -10,16 +10,22 @@ int main(void)
     BITBOARD white_state = game_board->state ->white;
 
 
-    for (int i = 0; i <= 10; i++) {
+    for (int i = 0; i <= 100; i++) {
+
+        if (i % 2 == 0) {
+            char x = fgetc(stdin);
+            system("cls");
+
+            print_board(game_board);
+        }
         Move mv = get_random_move(game_board, i % 2 == 1);
 
-        if (verify_move(game_board, &mv))
-            move_piece(game_board, &mv);
-       // system("cls");
-        print_board(game_board);
-        BITBOARD num = game_board->state->black | game_board->state->white;
-        print_num(&num);
-     //   Sleep(1000);
+        while (!verify_move(game_board, &mv))
+            mv = get_random_move(game_board, i % 2 == 1);
+
+        move_piece(game_board, &mv);
+        printf("\n\n");
+        
     }
 
     free_board(game_board);

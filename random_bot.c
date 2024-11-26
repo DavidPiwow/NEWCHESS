@@ -189,8 +189,7 @@ Move random_diagonal(MoveChoices* choices) {
     return (Move){choices->x,choices->x + dx, choices->y, choices->y + ry, rx, ry};
 }
 
-Move random_straight(Board* board, MoveChoices* choices, Coordinates* start)
-{
+Move random_straight(Board* board, MoveChoices* choices, Coordinates* start) {
     int x, y;
     x = start->x; y = start->y;
     
@@ -219,7 +218,6 @@ Move random_straight(Board* board, MoveChoices* choices, Coordinates* start)
     
     if (dx > 0) rx = (rand() % abs(dx)) + 1;
     if (dy > 0) ry = (rand() % abs(dy)) + 1;
-    
     
     if (check == 'K') {
         if (rx != 0)
