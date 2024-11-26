@@ -94,8 +94,7 @@ static int verify_pawn(Board *board, Move *move) {
 }
 
 
-int verify_horse(Board* board, Move* move) {
-    char piece = get_piece_at(board, move->x1, move->y1);
+int verify_horse(Move* move) {
     // pieces between do not matter
     // horses can move 2 in one direction and 1 in the other
     if (abs(move->dx) == 2) {
@@ -123,7 +122,7 @@ int verify_move(Board* board, Move* move) {
         if (! verify_pawn(board, move)) return 0;
     }
     else if (toupper(piece) == 'N') {
-        if (! verify_horse(board, move)) return 0;
+        if (! verify_horse(move)) return 0;
     }
     else if (!correct_direction(move, piece)) {
         return 0;

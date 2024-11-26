@@ -20,7 +20,7 @@ struct _move {
 };
 
 struct _coordinates {
-    int x, y;
+    int x,y;
 };
 
 struct _move_history {

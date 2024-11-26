@@ -1,20 +1,18 @@
 #include "helper_functions.h"
-#include <Windows.h>
-
 int main(void)
 {
     // initialize random and game board
     srand((unsigned int)time(NULL)); 
     Board* game_board = create_board();
     if (!game_board) return 0;
-    BITBOARD white_state = game_board->state ->white;
+  //  BITBOARD white_state = game_board->state ->white;
 
 
     for (int i = 0; i <= 100; i++) {
 
         if (i % 2 == 0) {
-            char x = fgetc(stdin);
-            system("cls");
+          //  char x = fgetc(stdin);
+            system("clear");
 
             print_board(game_board);
         }

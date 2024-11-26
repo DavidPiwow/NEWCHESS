@@ -61,14 +61,12 @@ Coordinates* find_pieces(Board* board, int up) {
     return NULL;
 }
  
-static Coordinates* find_longest(Board* board, Coordinates* pieces, MoveChoices* choices) {
+static Coordinates* find_longest(Coordinates* pieces, MoveChoices* choices) {
     int  index = 0;
     int longest_move = 0;
     int longest_index = 0;
 
     while (pieces[index].x != EMPTY) {
-        int x = choices[index].x;
-        int y = choices[index].y;
         if (choices[index].any > 0) {
             if (choices[index].any > longest_move) {
                 longest_move = choices[index].any;
@@ -84,7 +82,7 @@ static Coordinates* find_longest(Board* board, Coordinates* pieces, MoveChoices*
 Coordinates get_most_moves(Board* board, int up) {
     MoveChoices* choices = malloc(sizeof(MoveChoices) * (PIECE_COUNT + 1));
     if (!choices)
-        return (Coordinates) { EMPTY };
+        return (Coordinates) { EMPTY,EMPTY };
 
     Coordinates* pieces = find_pieces(board, up);
     int index = 0;
@@ -94,7 +92,7 @@ Coordinates get_most_moves(Board* board, int up) {
         index++;
     }
 
-    Coordinates* most_moves = find_longest(board, pieces, choices);
+    Coordinates* most_moves = find_longest(pieces, choices);
 
     int x = most_moves->x;
     int y = most_moves->y;

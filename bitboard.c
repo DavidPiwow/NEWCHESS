@@ -30,6 +30,25 @@ inline static BITBOARD make_mask(int x, int y) {
     return (uint64_t)1 << ((SQUARE_COUNT - 1 - x) - (BOARD_SIZE  * y));
 }
 
+// OUT: moves the original mask by x and y, be aware it CHANGES THE ORIGINAL MASK
+static void shift_mask(BITBOARD* original_mask, int x, int y) {
+    int x_shift = abs(x);
+    int y_shift = abs(y) * BOARD_SIZE;
+    // negative shifts aren't allowed so this is the best i got
+    if (x > 0) {
+        *original_mask = *original_mask >> x_shift;
+    }
+    else {
+        *original_mask = *original_mask << x_shift;
+    }
+
+    if (y > 0) {
+        *original_mask = *original_mask >> y_shift;
+    }
+    else {
+        *original_mask = *original_mask << y_shift;
+    }
+}
 
 // start at x1 and make a mask of the steps between x1 to x2
 static BITBOARD create_move_mask(struct _move* move) {
@@ -65,25 +84,7 @@ inline static int has_piece(BITBOARD* board, Move* move) {
     return 0;
 }
 
-// OUT: moves the original mask by x and y, be aware it CHANGES THE ORIGINAL MASK
-static void shift_mask(BITBOARD* original_mask, int x, int y) {
-    int x_shift = abs(x);
-    int y_shift = abs(y) * BOARD_SIZE;
-    // negative shifts aren't allowed so this is the best i got
-    if (x > 0) {
-        *original_mask = *original_mask >> x_shift;
-    }
-    else {
-        *original_mask = *original_mask << x_shift;
-    }
 
-    if (y > 0) {
-        *original_mask = *original_mask >> y_shift;
-    }
-    else {
-        *original_mask = *original_mask << y_shift;
-    }
-}
 
 int piece_swap(BoardState* game_state, struct _move* move, int white_team) {
     BITBOARD team_board = white_team ? game_state->white : game_state->black;
@@ -92,7 +93,6 @@ int piece_swap(BoardState* game_state, struct _move* move, int white_team) {
     if (!(team_board & piece_location)) return 0;
 
     BITBOARD enemy_board = white_team ? game_state->black : game_state->white;
-    BITBOARD total_board = team_board | enemy_board;
 
     // remove the old location from the board
     team_board = team_board ^ piece_location;
@@ -116,7 +116,7 @@ int piece_swap(BoardState* game_state, struct _move* move, int white_team) {
         game_state->white = enemy_board;
         game_state->black = team_board;
     }
-
+    return 1;
 }
 
 int attempt_move(BoardState* game_state, struct _move* move, int white_team) {
